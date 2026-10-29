@@ -60,8 +60,8 @@ body{
 }
 
 /* ============================================================
-   BACKGROUND — criss-cross lines moving LEFT → RIGHT
-   + a light sweep that glows left → right infinitely
+   BACKGROUND — criss-cross lines moving LEFT → RIGHT (infinity)
+   (light sweep REMOVED)
    ============================================================ */
 .bg-wrap{
   position: fixed;
@@ -83,42 +83,13 @@ body{
   background-image:
     repeating-linear-gradient(45deg, rgba(212,175,55,0.22) 0px, rgba(212,175,55,0.22) 1px, transparent 1px, transparent 72px),
     repeating-linear-gradient(-45deg, rgba(212,175,55,0.22) 0px, rgba(212,175,55,0.22) 1px, transparent 1px, transparent 72px);
-  /* Move LEFT → RIGHT (horizontal drift only, seamless with 72px tile) */
+  /* Move LEFT → RIGHT (horizontal only, 72px tile = seamless) */
   animation: moveLinesX 18s linear infinite;
 }
 
 @keyframes moveLinesX{
   0%   { transform: translate3d(-72px, 0, 0); }
   100% { transform: translate3d(0, 0, 0); }
-}
-
-/* Glowing light sweep across the lines, left → right, infinite */
-.bg-sweep{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,236,158,0.00) 35%,
-    rgba(255,236,158,0.18) 48%,
-    rgba(255,255,255,0.35) 50%,
-    rgba(255,236,158,0.18) 52%,
-    rgba(255,236,158,0.00) 65%,
-    transparent 100%
-  );
-  width: 100%;
-  height: 100%;
-  mix-blend-mode: screen;
-  transform: translateX(-100%);
-  animation: sweepGlow 9s linear infinite;
-}
-
-@keyframes sweepGlow{
-  0%   { transform: translateX(-100%); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
 }
 
 .bg-glow{
@@ -481,31 +452,28 @@ body{
   aspect-ratio: 4/5;
   background: #0a0a12;
 }
-.gal-item img,
-.gal-item video{
+.gal-item img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   transition: .4s;
 }
-.gal-item:hover img,
-.gal-item:hover video{ transform: scale(1.08); }
+.gal-item:hover img{ transform: scale(1.08); }
 
-.gal-video{ cursor: pointer; }
-.gal-video-icon{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  color: #fff;
-  background: rgba(0,0,0,0.35);
-  pointer-events: none;
-  transition: opacity .3s;
+/* ---- Video items ---- */
+.gal-video{
+  background: #000;
+  position: relative;
 }
-.gal-video:hover .gal-video-icon{ opacity: 0; }
+.gal-video-el{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+  border-radius: inherit;
+}
 
 .contact-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 .contact-left{ display: flex; flex-direction: column; gap: 20px; }
@@ -545,13 +513,13 @@ body{
    ============================================================ */
 @media (max-width: 768px){
   :root{ --header-h: 70px; }
-  
+
   .menu-toggle{ display: flex; }
   .header-inner{ padding: 10px 15px; gap: 10px; }
   .brand{ flex-shrink: 1; min-width: 0; max-width: calc(100% - 60px); }
   .brand-logo-wrap{ width: 40px; height: 40px; }
   .brand-name{ font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-  
+
   .nav{
     position: fixed; top: var(--header-h); right: 0; width: 260px; height: calc(100vh - var(--header-h));
     background: rgba(8,18,43,0.98); backdrop-filter: blur(10px);
@@ -562,28 +530,28 @@ body{
   .nav.open{ transform: translateX(0); }
   .nav a{ padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 1rem; }
   .nav-group-link{ justify-content: center; margin-top: 10px; border: 1px solid #25d366; }
-  
+
   .lang-switch{ margin-top: 20px; width: 100%; }
   .lang-btn{ width: 100%; justify-content: space-between; padding: 12px; }
   .lang-menu{ position: static; width: 100%; margin-top: 5px; box-shadow: none; background: rgba(0,0,0,0.2); }
-  
+
   .hero{ padding: 30px 0 50px; min-height: auto; }
   .hero-inner{ display: flex; flex-direction: column; text-align: center; gap: 30px; }
   .hero-photo-wrap{ order: -1; min-height: auto; width: 100%; display: flex; justify-content: center; }
   .hero-photo{ max-width: 260px; }
   .hero-photo-shine { max-width: 260px; }
-  
+
   .hero-title{ font-size: 2.2rem; line-height: 1.1; margin-bottom: 10px; }
   .hero-sub{ font-size: 1.2rem; }
   .hero-tag{ font-size: 1rem; margin-bottom: 25px; }
-  
+
   .hero-actions{ flex-direction: column; width: 100%; gap: 12px; }
   .hero-actions .btn{ width: 100%; padding: 15px; font-size: 1rem; }
-  
+
   .contact-grid{ display: flex; flex-direction: column; gap: 20px; }
   .contact-map{ min-height: 300px; order: -1; }
   .contact-map iframe{ height: 300px; min-height: 300px; }
-  
+
   .about-gallery{ grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .section{ padding: 50px 0; }
   .dosha-grid{ grid-template-columns: 1fr; margin-bottom: 40px; }
@@ -603,5 +571,4 @@ body{
     transition-duration: 0.001ms !important;
   }
   .hero-photo-shine::before{ display: none; }
-  .bg-sweep{ display: none; }
-}
+   }
